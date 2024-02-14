@@ -1,6 +1,21 @@
+# Rupee Games
+A mod that has three game modes that utilize rupees.
 
+## Rupee Damage
+In this mode, Link will lose health when collecting rupees.
 
-# Twilight Princess - REL
+## Rupee Instakill
+In this mode, Link will die when collecting a rupee, even if he had full health.
+
+## Rupee Dash Mode
+In this mode, Link will lose rupees every X amount of seconds. Once you have 0 rupees, Link will instead lose health every X amount of seconds. (X is user-specified)
+
+## Controls
+* Hold d-pad down and press L to turn the terminal on/off.
+* Press d-pad left or right when terminal is on to switch between the game modes.
+* Press A when Rupee Dash Mode is selected to modify the amount of seconds.
+
+## Twilight Princess - REL
 This is a template repository for you to create your very own Twilight Princess mod and provide a simple start to write your code. Kind of like a "hello world" for TP.
 
 ## Project Structure
