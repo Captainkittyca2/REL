@@ -11,6 +11,7 @@
 #pragma once
 #include <display/console.h>
 #include <tp/f_ap_game.h>
+#include <tp/d_a_alink.h>
 
 #include <cinttypes>
 
@@ -37,6 +38,7 @@ namespace mod
        private:
         // Counter
         int i;
+        int trimer;
         // Console
         libtp::display::Console c;
         // "trampoline/return" function to the original function that we hook in order to proc our NewFrame function
