@@ -19,7 +19,11 @@
 #include <tp/d_save.h>
 #include <tp/d_item.h>
 #include <tp/JFWSystem.h>
+#ifdef PLATFORM_WII
+#include <tp/m_re_controller_pad.h>
+#else
 #include <tp/m_do_controller_pad.h>
+#endif
 libtp::tp::d_com_inf_game::dComIfG_inf_c g_dcomIfG_gameInfo;
 namespace mod
 {
@@ -41,7 +45,6 @@ namespace mod
     // primary cinttypes
     Mod::Mod() : c( 0 )
     {
-        i = 0;
         trimer = 0;
     }
     libtp::tp::jfw_system::SystemConsole* sysConsolePtr = libtp::tp::jfw_system::systemConsole;
@@ -59,29 +62,52 @@ namespace mod
         //libtp::display::setConsole(true, 25);
         // Print controls
         strcpy( sysConsolePtr->consoleLine[20].line, "Option Toggle: Press D-Pad Left or Right");
+#ifdef PLATFORM_WII
+        strcpy( sysConsolePtr->consoleLine[21].line, "Console On/Off: Hold D-Pad Down and Press Minus");
+#else
         strcpy( sysConsolePtr->consoleLine[21].line, "Console On/Off: Hold D-Pad Down and Press L");
+#endif
         strcpy( sysConsolePtr->consoleLine[23].line, "youtube.com/@captainkittyca2" );
         gMod = this;
         // Hook the function that runs each frame
         return_fapGm_Execute =
             libtp::patch::hookFunction( libtp::tp::f_ap_game::fapGm_Execute, []() { return gMod->procNewFrame(); } );
     }
-bool checkButtonsPressedThisFrame(uint32_t buttons)
+#ifdef PLATFORM_WII
+    bool checkForButtonInput(uint32_t buttonCombo)
     {
-        using namespace libtp::tp::m_do_controller_pad;
-        CPadInfo* padInfo = &cpadInfo[PAD_1];
-
-        return padInfo->mPressedButtonFlags & buttons;
+        return (libtp::tp::m_re_controller_pad::mReCPd::m_pad->buttonInput & buttonCombo) == buttonCombo;
     }
 
-bool checkButtonsPressed(uint32_t buttons)
+    bool checkForButtonInputSingleFrame(uint32_t buttonCombo)
     {
-        using namespace libtp::tp::m_do_controller_pad;
-        CPadInfo* padInfo = &cpadInfo[PAD_1];
-
-        return (padInfo->mButtonFlags & buttons) == buttons;
+        libtp::tp::m_re_controller_pad::ReCPad* padInfo = &libtp::tp::m_re_controller_pad::mReCPd::m_pad[0];
+        if ((padInfo->buttonInput & buttonCombo) == buttonCombo)
+        {
+            if (padInfo->buttonInputTrig & buttonCombo)
+            {
+                return true;
+            }
+        }
+        return false;
     }
+#else
+    bool checkButtonsPressedThisFrame(uint32_t buttons)
+        {
+            using namespace libtp::tp::m_do_controller_pad;
+            CPadInfo* padInfo = &cpadInfo[PAD_1];
 
+            return padInfo->mPressedButtonFlags & buttons;
+        }
+
+    bool checkButtonsPressed(uint32_t buttons)
+        {
+            using namespace libtp::tp::m_do_controller_pad;
+            CPadInfo* padInfo = &cpadInfo[PAD_1];
+
+            return (padInfo->mButtonFlags & buttons) == buttons;
+        }
+#endif
     libtp::tp::d_com_inf_game::dComIfG_inf_c* gameinfoptr = &libtp::tp::d_com_inf_game::dComIfG_gameInfo;
     libtp::tp::d_a_alink::daAlink* linkMapPtr = gameinfoptr->play.mPlayer;
     libtp::tp::d_save::dSv_player_status_a_c* playerStatusPtr = &gameinfoptr->save.save_file.player.player_status_a;
@@ -93,11 +119,21 @@ bool checkButtonsPressed(uint32_t buttons)
     int iiimer = 150;
     void Mod::procNewFrame()
     {
+#ifdef PLATFORM_WII
+        if (checkForButtonInput(libtp::tp::m_re_controller_pad::ReCPadInputs::Button_DPad_Down) && checkForButtonInputSingleFrame(libtp::tp::m_re_controller_pad::ReCPadInputs::Button_Minus)) {
+#else
         if (checkButtonsPressed(libtp::tp::m_do_controller_pad::Button_DPad_Down) && checkButtonsPressedThisFrame(libtp::tp::m_do_controller_pad::Button_L)) {
+#endif
             if (consooole) {libtp::display::setConsole(false, 0); consooole = false;} else {libtp::display::setConsole(true, 25); consooole = true;}
-        } else if (consooole) {
+        } 
+            else if (consooole) {
+#ifdef PLATFORM_WII
+            if (checkForButtonInputSingleFrame(libtp::tp::m_re_controller_pad::ReCPadInputs::Button_DPad_Left)) toggle--;
+            else if (checkForButtonInputSingleFrame(libtp::tp::m_re_controller_pad::ReCPadInputs::Button_DPad_Right)) toggle++;
+#else
             if (checkButtonsPressedThisFrame(libtp::tp::m_do_controller_pad::Button_DPad_Left)) toggle--;
             else if (checkButtonsPressedThisFrame(libtp::tp::m_do_controller_pad::Button_DPad_Right)) toggle++;
+#endif
             if (toggle < 0) toggle = 3; else if (toggle > 3) toggle = 0;
             if (toggle == 0) {strcpy( sysConsolePtr->consoleLine[10].line, "Game mode:       <none>" ); strcpy( sysConsolePtr->consoleLine[11].line, ""); strcpy( sysConsolePtr->consoleLine[18].line, "");}
             else if (toggle == 1) {strcpy( sysConsolePtr->consoleLine[10].line, "Game mode:       <rupee damage>" ); strcpy( sysConsolePtr->consoleLine[11].line, ""); strcpy( sysConsolePtr->consoleLine[18].line, ""); strcpy( sysConsolePtr->consoleLine[19].line, "Link loses health when collecting rupees.");}
@@ -106,7 +142,11 @@ bool checkButtonsPressed(uint32_t buttons)
                 strcpy( sysConsolePtr->consoleLine[10].line, "Game mode:       <rupee dash mode (experimental)>" );
                 strcpy( sysConsolePtr->consoleLine[18].line, "Speed Toggle: Press A to change speed");
                 strcpy( sysConsolePtr->consoleLine[19].line, "You keep losing rupees. Eventually, You lose health.");
+#ifdef PLATFORM_WII
+                if (checkForButtonInputSingleFrame(libtp::tp::m_re_controller_pad::ReCPadInputs::Button_A)) {
+#else
                 if (checkButtonsPressedThisFrame(libtp::tp::m_do_controller_pad::Button_A)) {
+#endif
                     speedToggle++;
                     if (speedToggle > 10) speedToggle = 1;
                 }
