@@ -32,6 +32,9 @@
 8002a4d0:tgscInfoInit
 8002b2bc:roomLoader
 
+80250c84:cXyzMultiply
+80250d0c:cXyzAdd
+
 // data
 80520878:AssertHeap
 8052087c:DbPrintHeap
@@ -95,6 +98,7 @@
 80021a74:createItemForDirectGet
 8001f764:CreateAppend
 8001f954:fopAcM_create
+8001f9c8:fopAcM_fastCreate
 
 // f_pc_node_req
 804689e8:l_fpcNdRq_Queue
@@ -124,6 +128,7 @@
 800bd628:procDiveJump
 800be504:procCrouchInit
 800be574:procCrouch
+800cfc44:procDamageInit
 800eec58:procCrawlStartInit
 800eedc0:procCrawlStart
 800eeea8:procCrawlMoveInit
@@ -135,6 +140,7 @@
 8010e150:checkTreasureRupeeReturn
 80112420:procGanonFinishInit
 801124a4:procGanonFinish
+80128010:procWolfDamageInit
 80131680:setClothesChange
 //806d4cd8:dComIfGs_isEventBit
 803d4494:getSeType
@@ -156,7 +162,12 @@
 801979d8:setWalletMaxNum
 
 // d_meter2.o
+8020be44:moveLife
 8020c268:moveKantera
+
+// d_meter2_draw.o
+801fcedc:setAlphaLifeAnimeMin
+801fcf3c:setAlphaLifeAnimeMax
 
 // JKRHeap.o
 802cd510:__nw_JKRHeap
@@ -169,6 +180,12 @@
 // OSCache.o
 80330c3c:ICInvalidateRange
 80330b58:DCFlushRange
+
+// os.o
+800000F8:__OSBusClock
+
+// OSTime.o
+80339f4c:OSGetTime
 
 // runtime.o
 803a8b54:_savefpr_14

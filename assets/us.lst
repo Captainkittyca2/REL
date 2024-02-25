@@ -10,6 +10,9 @@
 800266A4:roomTresureInit
 80027D04:setTresure
 
+80266B84:cXyzMultiply
+80266AE4:cXyzAdd
+
 // data
 80450C34:archiveHeap
 
@@ -27,21 +30,28 @@
 80450614:freezeActors
 80450CE0:isLoading
 
+800beaf8:checkSceneChange
+
 // f_ap_game.o
 80018A6C:fapGm_Execute
 
 // f_op_actor_mng.o
+80019e04:fopAcM_fastCreate
 8001BBE8:createItemForPresentDemo
 8001BC74:createItemForTrBoxDemo
 8001C0D4:createItemForBoss
 8001C174:createItemForMidBoss
 8001C1B8:createItemForDirectGet
 
+// f_pc_node_req
+803A3A38:l_fpcNdRq_Queue
+
 // d_map_path_dmap.o
 8003EE5C:getMapPlayerPos
 
 // d_item.o
 80097EE0:checkItemGet
+80033e60:onFirstBit
 
 // d_a_alink.h
 800B271C:setStickData
@@ -49,12 +59,26 @@
 8011A6FC:checkTreasureRupeeReturn
 8011E9F8:procGanonFinishInit
 8011EA78:procGanonFinish
+800BAF08:checkNextActionFromCrouch
+800C7690:procCrouchInit
+800C77F4:procCoMetamorphoseInit
+800d8f3c:procDamageInit
+801360ec:procWolfDamageInit
+80140038:setClothesChange
 
 // data
 8038EB8C:ladderVars
 
 // d_menu_collect.o
 801B3340:setWalletMaxNum
+
+// d_meter2.o
+8021FD60:moveLife
+80220180:moveKantera
+
+// d_meter2_draw.o
+80214df4:setAlphaLifeAnimeMin
+80214e54:setAlphaLifeAnimeMax
 
 // JKRHeap.o
 802CEC98:__nw_JKRHeap
@@ -84,6 +108,12 @@
 // 8033B8F8:L2GlobalInvalidate
 // 8033B990:DMAErrorHandler
 // 8033BAF0:__OSCacheInit
+
+// os.o
+800000F8:__OSBusClock
+
+// OSTime.o
+803426fc:OSGetTime
 
 // runtime.o
 80362108:_savefpr_14

@@ -12,9 +12,13 @@
 #include <display/console.h>
 #include <tp/f_ap_game.h>
 #include <tp/d_a_alink.h>
+#include <tp/d_meter2.h>
 
 #include <cinttypes>
 
+#define GAME_BOOT 0
+#define GAME_TITLE 1
+#define GAME_ACTIVE 2
 namespace mod
 {
     /***********************************************************************************
@@ -35,18 +39,39 @@ namespace mod
         Mod();
         void init();
 
-       private:
+       public:
         // Counter
-        int i;
         int trimer;
         // Console
         libtp::display::Console c;
         // "trampoline/return" function to the original function that we hook in order to proc our NewFrame function
-        void ( *return_fapGm_Execute )() = nullptr;
+        void ( *buttonthing )() = nullptr;
+        void ( *life_thingy)(libtp::tp::d_meter2_draw::dMeter2Draw_c* dMeterDrawPtr) = nullptr;
+        void ( *offUI)(libtp::tp::d_meter2_draw::dMeter2Draw_c* dMeterDrawPtr) = nullptr;
+
 
         /**
          * @brief This function is called when there's a frame update
          */
         void procNewFrame();
+
+        /**
+         * @brief Plays every frame that lantern meter oil is present
+         * 
+         * @param dMeterPtr A pointer to the current dMeter2 structure.
+        */
+        //void rupeePoggy(libtp::tp::d_meter2_draw::dMeter2Draw_c* dMeterDrawPtr);*/
+        /**
+         * @brief checks if heart UI is on for first frame
+         * 
+         * @param dMeterPtr A pointer to the current dMeter2 structure.
+        */
+        void UICheck(libtp::tp::d_meter2_draw::dMeter2Draw_c* dMeterDrawPtr);
+        /**
+         * @brief checks if heart UI is off for first frame
+         * 
+         * @param dMeterPtr A pointer to the current dMeter2 structure.
+        */
+        void UICheck2(libtp::tp::d_meter2_draw::dMeter2Draw_c* dMeterDrawPtr);
     };
 }     // namespace mod

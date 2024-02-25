@@ -32,6 +32,9 @@
 8002a3c0:tgscInfoInit
 8002b1ac:roomLoader
 
+802515e4:cXyzMultiply
+8025155c:cXyzAdd
+
 // data
 8053a878:AssertHeap
 8053a87c:DbPrintHeap
@@ -93,6 +96,7 @@
 80021950:createItemForDirectGet
 8001f678:CreateAppend
 8001f868:fopAcM_create
+8001f8dc:fopAcM_fastCreate
 
 // f_pc_node_req
 804813e0:l_fpcNdRq_Queue
@@ -122,7 +126,9 @@
 803e9194:getSeType
 80096734:checkStageName
 800c8a4c:checkDownAttackState
+800cf71c:procDamageInit
 800be190:procCoMetamorphoseInit
+801278e0:procWolfDamageInit
 80109fa8:checkEventRun
 //8044B5CC:linkStatus
 800d89b0:checkBootsMoveAnime
@@ -136,6 +142,14 @@
 
 // d_menu_collect.o
 801971e4:setWalletMaxNum
+
+// d_meter2.o
+8020c69c:moveLife
+8020cac0:moveKantera
+
+// d_meter2_draw.o
+801fd748:setAlphaLifeAnimeMin
+801fd7a8:setAlphaLifeAnimeMax
 
 // JKRHeap.o
 802e2b40:__nw_JKRHeap
@@ -195,6 +209,12 @@
 // 00000000:L2GlobalInvalidate
 // 803464c8:DMAErrorHandler
 // 80346610:__OSCacheInit
+
+// os.o
+800000F8:__OSBusClock
+
+// OSTime.o
+8034f514:OSGetTime
 
 // runtime.o
 803be11c:_savefpr_14

@@ -102,9 +102,13 @@
 // d_a_alink.h
 800a990c:setStickData
 800b2a90:checkHeavyStateOn
+800bccec:procAutoJumpInit
+800be540:procCrouchInit
+800cfc80:procDamageInit
 8010e104:checkTreasureRupeeReturn
 801123bc:procGanonFinishInit
 80112440:procGanonFinish
+80127f94:procWolfDamageInit
 
 // data
 803d0d68:climbVars
@@ -114,6 +118,16 @@
 
 // d_menu_collect.o
 80197928:setWalletMaxNum
+
+// d_meter2.o
+8020bb4c:moveLife
+8020bf70:moveKantera
+8020c320:moveOxygen
+8020ca60:moveRupee
+
+// d_meter2_draw.o
+801fcbe8:setAlphaLifeAnimeMin
+801fcc48:setAlphaLifeAnimeMax
 
 // JKRHeap.o
 802cd940:__nw_JKRHeap
@@ -144,6 +158,13 @@
 // 00000000:L2GlobalInvalidate
 // 803464c8:DMAErrorHandler
 // 80346610:__OSCacheInit
+
+// os.o
+800000F8:__OSBusClock
+
+// OSTime.o
+8033a37c:OSGetTime
+8033a394:OSGetTick
 
 // runtime.o
 803a8fd8:_savefpr_14

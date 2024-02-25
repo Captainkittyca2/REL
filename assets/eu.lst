@@ -49,12 +49,19 @@
 8011A908:checkTreasureRupeeReturn
 8011EC04:procGanonFinishInit
 8011EC84:procGanonFinish
+800c7a00:procCoMetamorphoseInit
+800d9148:procDamageInit
+801362f8:procWolfDamageInit
 
 // data
 8039038C:ladderVars
 
 // d_menu_collect.o
 801B3598:setWalletMaxNum
+
+// d_meter2_draw.o
+802150b8:setAlphaLifeAnimeMin
+80215118:setAlphaLifeAnimeMax
 
 // JKRHeap.o
 802cfa98:__nw_JKRHeap
@@ -84,6 +91,12 @@
 // 8033C6F8:L2GlobalInvalidate
 // 8033C790:DMAErrorHandler
 // 8033C8F0:__OSCacheInit
+
+// os.o
+800000F8:__OSBusClock
+
+// OSTime.o
+80343568:OSGetTime
 
 // runtime.o
 80362F38:_savefpr_14
