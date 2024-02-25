@@ -1,4 +1,4 @@
-# Rupee Games
+# Rupee Challenges
 A mod that has three game modes that utilize rupees.
 
 ## Rupee Damage
