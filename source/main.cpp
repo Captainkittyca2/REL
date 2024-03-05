@@ -1,9 +1,9 @@
 /**
  * @file main.cpp
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date YYYY-MM-DD
+ * @author Captain Kitty Cat (you@domain.com)
+ * @brief Displays the FPS in-game
+ * @version 1.0
+ * @date 2024-03-05
  *
  * @copyright Copyright (c) YYYY
  *
@@ -11,11 +11,17 @@
 #include <display/console.h>     // Contains a very neat helper class to print to the console
 #include <main.h>
 #include <patch.h>     // Contains code for hooking into a function
+#include <cstdio>
+#include <cstring>
 #include <tp/f_ap_game.h>
-
+#include <tp/JFWSystem.h>
+#include <gc_wii/OS.h>
+#include <gc_wii/OSTime.h>
 namespace mod
 {
     Mod* gMod = nullptr;
+    float prevFrameAnalogR = 0.f;
+    uint8_t gameState = GAME_BOOT;
 
     void main()
     {
@@ -25,15 +31,11 @@ namespace mod
 
     void exit() {}
 
-    // Create our console instance (it will automatically display some of the definitions from our Makefile like version,
-    // variant, project name etc.
-    // this console can be used in a similar way to cout to make printing a little easier; it also supports \n for new lines
-    // (\r is implicit; UNIX-Like) and \r for just resetting the column and has overloaded constructors for all of the
-    // primary cinttypes
-    Mod::Mod(): c( 0 )
+    Mod::Mod() : c( 0 )
     {
-        i = 0;
+        trimer = 0;
     }
+    libtp::tp::jfw_system::SystemConsole* sysConsolePtr = libtp::tp::jfw_system::systemConsole;
 
     void Mod::init()
     {
@@ -44,28 +46,27 @@ namespace mod
          * libtp::display::setConsole(true, 25);
          * libtp::display::print(1, "Hello World!");
          */
-        c << "Hello world!\n\n";
-
+        libtp::display::setConsoleColor(200, 21, 148, 0);
         gMod = this;
         // Hook the function that runs each frame
-        return_fapGm_Execute =
+        buttonthing =
             libtp::patch::hookFunction( libtp::tp::f_ap_game::fapGm_Execute, []() { return gMod->procNewFrame(); } );
     }
 
-    void Mod::procNewFrame()
-    {
-        // This runs BEFORE the original (hooked) function (fapGm_Execute)
+    int64_t second = 1;
+    char speeeed[23];
+    char counter[20];
+    int frameCount = 0;
 
-        // we can do whatever stuff we like... counting for example:
-        i++;
-        c << "\r"
-          << "Frames: " << i;
 
-        // return what our original function would've returned (in this case the return is obsolete since it is a void func)
-        // And most importantly, since this is related to the frame output, call the original function at all because it may do
-        // important stuff that would otherwise be skipped!
-
-        return return_fapGm_Execute();     // hookFunction replaced this return_ function with a branch back to the original
-                                           // function so that we can use it now
+    void Mod::procNewFrame() {
+        frameCount++;
+        if ((libtp::gc_wii::os_time::OSGetTime() - second) >= static_cast<int64_t>((libtp::gc_wii::os::__OSBusClock/4))) {
+            sprintf(counter, "FPS: %d", frameCount);
+            strcpy( sysConsolePtr->consoleLine[5].line, counter);
+            second = libtp::gc_wii::os_time::OSGetTime();
+            frameCount = 0;
+        }
+        return buttonthing();
     }
 }     // namespace mod
